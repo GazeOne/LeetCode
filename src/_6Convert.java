@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class _6Convert {
 
    /* 将一个给定字符串根据给定的行数，以从上往下、从左到右进行 Z 字形排列。
@@ -27,8 +30,84 @@ public class _6Convert {
     E C   I H   N
     T     S     G*/
 
-    public String convert(String s, int numRows) {
-        String result = "";
-        return result;
+   //按行排序，numrows个stringbuilder，根据当前z字的方向计算每个stringbuilder的值
+    public static String convert(String s, int numRows) {
+        if (numRows == 1) return s;
+        List<StringBuilder> builders = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            StringBuilder builder = new StringBuilder();
+            builders.add(builder);
+        }
+        //true down false up
+        boolean currentDir = false;
+        int currentIndex = 0;
+        boolean firstTime = true;
+        for (int i = 0; i < s.length(); i++) {
+            if (currentIndex >= numRows || currentIndex <= 0) {
+                currentDir = !currentDir;
+                if (!firstTime) {
+                    if (currentIndex >= numRows) currentIndex--;
+                    else currentIndex++;
+                }
+            }
+            if (currentDir) {
+                System.out.println("down " + currentIndex);
+                builders.get(currentIndex).append(s.charAt(i));
+                currentIndex++;
+                firstTime = false;
+            } else {
+                System.out.println("up " + currentIndex);
+                currentIndex--;
+                builders.get(currentIndex).append(s.charAt(i));
+                firstTime = false;
+            }
+        }
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < builders.size(); i++) {
+            result.append(builders.get(i));
+        }
+        return result.toString();
+    }
+
+   /* 法一：按行排序
+            思路
+
+    通过从左向右迭代字符串，我们可以轻松地确定字符位于 Z 字形图案中的哪一行。
+
+    算法
+
+    我们可以使用min(numRows,len(s)) 个列表来表示 Z 字形图案中的非空行。
+
+    从左到右迭代 ss，将每个字符添加到合适的行。可以使用当前行和当前方向这两个变量对合适的行进行跟踪。
+
+    只有当我们向上移动到最上面的行或向下移动到最下面的行时，当前方向才会发生改变。
+
+    class Solution {
+        public String convert(String s, int numRows) {
+
+            if (numRows == 1) return s;
+
+            List<StringBuilder> rows = new ArrayList<>();
+            for (int i = 0; i < Math.min(numRows, s.length()); i++)
+                rows.add(new StringBuilder());
+
+            int curRow = 0;
+            boolean goingDown = false;
+
+            for (char c : s.toCharArray()) {
+                rows.get(curRow).append(c);
+                if (curRow == 0 || curRow == numRows - 1) goingDown = !goingDown;
+                curRow += goingDown ? 1 : -1;
+            }
+
+            StringBuilder ret = new StringBuilder();
+            for (StringBuilder row : rows) ret.append(row);
+            return ret.toString();
+        }
+    }*/
+
+    public static void main(String[] args) {
+        System.out.println("result = " + convert("LEETCODEISHIRING", 3));
     }
 }
