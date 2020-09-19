@@ -44,13 +44,7 @@ public class _77Combine {
     }
 
     private static void printlnResult(List<List<Integer>> result) {
-        for (int i = 0; i < result.size(); i++) {
-            List<Integer> data = result.get(i);
-            for (int j = 0; j < data.size(); j++) {
-                System.out.print(data.get(j) + "  ");
-            }
-            System.out.println();
-        }
+        _39CombinationSum.printlnData(result);
     }
 
 }
